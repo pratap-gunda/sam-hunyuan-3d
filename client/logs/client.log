@@ -1,0 +1,747 @@
+2026-06-09 00:07:41,415 INFO [ui.main_window] Uploading files
+2026-06-09 00:07:41,492 ERROR [ui.main_window] Upload failed
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+OSError: [WinError 10049] The requested address is not valid in its context
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1353, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1113, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1057, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='0.0.0.0', port=8000): Failed to establish a new connection: [WinError 10049] The requested address is not valid in its context
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='0.0.0.0', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='0.0.0.0', port=8000): Failed to establish a new connection: [WinError 10049] The requested address is not valid in its context"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\Desktop\hunyuan_test\client\ui\main_window.py", line 156, in upload
+    self.job_id = self.client().upload(self.input_image_path, self.rough_mask_path)
+                  ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\Desktop\hunyuan_test\client\api_client.py", line 31, in upload
+    response = requests.post(
+        f"{self.server_url}/upload",
+    ...<4 lines>...
+        timeout=self.timeout,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='0.0.0.0', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='0.0.0.0', port=8000): Failed to establish a new connection: [WinError 10049] The requested address is not valid in its context"))
+2026-06-09 00:07:41,534 INFO [ui.main_window] Upload failed: HTTPConnectionPool(host='0.0.0.0', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='0.0.0.0', port=8000): Failed to establish a new connection: [WinError 10049] The requested address is not valid in its context"))
+2026-06-09 00:11:09,742 INFO [ui.main_window] Uploading files
+2026-06-09 00:11:11,780 ERROR [ui.main_window] Upload failed
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1353, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1113, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1057, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\Desktop\hunyuan_test\client\ui\main_window.py", line 156, in upload
+    self.job_id = self.client().upload(self.input_image_path, self.rough_mask_path)
+                  ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\Desktop\hunyuan_test\client\api_client.py", line 31, in upload
+    response = requests.post(
+        f"{self.server_url}/upload",
+    ...<4 lines>...
+        timeout=self.timeout,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))
+2026-06-09 00:11:11,851 INFO [ui.main_window] Upload failed: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))
+2026-06-09 00:17:11,830 INFO [ui.main_window] Uploading files
+2026-06-09 00:17:21,899 INFO [ui.main_window] Upload complete: e48c3e32
+2026-06-09 00:18:04,328 INFO [ui.main_window] Generation started
+2026-06-09 00:18:05,877 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:18:06,893 INFO [ui.main_window] 100% - No module named 'sam2'
+2026-06-09 00:18:06,895 INFO [ui.main_window] Generation failed: No module named 'sam2'
+2026-06-09 00:44:49,660 INFO [ui.main_window] Uploading files
+2026-06-09 00:44:54,880 INFO [ui.main_window] Upload complete: edf78a7a
+2026-06-09 00:44:58,871 INFO [ui.main_window] Generation started
+2026-06-09 00:45:00,423 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:45:01,437 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:45:02,426 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:45:03,439 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:45:04,455 INFO [ui.main_window] 100% - [Errno 2] No such file or directory: '/root/hunyuan_test/server/cache/checkpoints/sam2.1_hiera_large.pt'
+2026-06-09 00:45:04,459 INFO [ui.main_window] Generation failed: [Errno 2] No such file or directory: '/root/hunyuan_test/server/cache/checkpoints/sam2.1_hiera_large.pt'
+2026-06-09 00:47:37,573 INFO [ui.main_window] Uploading files
+2026-06-09 00:47:43,238 INFO [ui.main_window] Upload complete: aa9f1f0f
+2026-06-09 00:47:47,551 INFO [ui.main_window] Generation started
+2026-06-09 00:47:49,101 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:47:50,096 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:47:51,087 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:47:52,111 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:47:53,103 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:47:54,103 INFO [ui.main_window] 100% - No module named 'hy3dgen'
+2026-06-09 00:47:54,104 INFO [ui.main_window] Generation failed: No module named 'hy3dgen'
+2026-06-09 00:49:08,732 INFO [ui.main_window] Uploading files
+2026-06-09 00:49:20,099 INFO [ui.main_window] Upload complete: 48d833cb
+2026-06-09 00:49:22,917 INFO [ui.main_window] Generation started
+2026-06-09 00:49:24,545 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:49:25,491 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:49:26,501 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:49:27,494 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:49:28,588 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:29,529 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:30,607 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:31,502 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:32,505 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:33,497 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:34,589 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:35,508 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:36,522 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:37,524 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:38,519 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:39,519 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:40,519 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:41,531 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:42,536 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:43,595 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:44,565 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:45,669 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:46,617 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:47,552 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:48,549 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:49,552 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:50,548 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:51,545 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:52,714 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:53,662 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:54,543 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:55,551 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:56,551 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:57,550 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:58,836 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:49:59,559 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:00,551 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:01,697 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:02,614 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:03,546 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:04,812 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:05,554 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:06,567 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:07,699 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:08,562 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:09,574 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:10,594 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:11,596 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:50:12,594 INFO [ui.main_window] 100% - libGL.so.1: cannot open shared object file: No such file or directory
+2026-06-09 00:50:12,596 INFO [ui.main_window] Generation failed: libGL.so.1: cannot open shared object file: No such file or directory
+2026-06-09 00:52:43,997 INFO [ui.main_window] Uploading files
+2026-06-09 00:52:45,365 INFO [ui.main_window] Upload complete: bd73f29d
+2026-06-09 00:52:52,728 INFO [ui.main_window] Generation started
+2026-06-09 00:52:54,292 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:52:55,298 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:52:56,291 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:52:57,303 INFO [ui.main_window] 30% - Running SAM2
+2026-06-09 00:52:58,303 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:52:59,497 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:00,304 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:01,317 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:02,313 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:03,326 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:04,319 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:05,314 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:06,415 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:07,339 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:08,828 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:10,356 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:11,712 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:12,967 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:14,369 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:15,362 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:16,372 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:17,638 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:18,365 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:19,367 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:20,358 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:21,381 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:22,377 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:23,378 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:24,369 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:25,515 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:26,377 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:27,728 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:28,818 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:29,401 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:30,837 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:31,403 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:32,726 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:33,804 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:34,882 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:36,425 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:37,418 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:38,425 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:39,428 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:40,432 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:41,430 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:42,576 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:43,418 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:44,971 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:46,423 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:47,903 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:49,776 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:50,436 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:51,980 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:53,476 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:54,469 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:55,482 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:56,474 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:58,307 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:53:59,519 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:00,496 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:02,341 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:03,538 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:04,685 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:05,562 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:06,567 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:07,716 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:08,879 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:09,563 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:11,044 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:12,599 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:14,072 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:15,610 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:16,610 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:17,610 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:20,347 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:22,307 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:23,632 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:25,168 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:26,638 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:27,916 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:29,135 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:30,643 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:31,634 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:32,634 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:33,921 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:35,052 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:35,668 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:36,676 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:37,669 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:38,664 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:39,664 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:40,665 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:41,663 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:42,665 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:43,667 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:44,680 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:45,681 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:46,693 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:47,711 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:48,726 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:49,728 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:50,741 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:51,738 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:52,743 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:53,740 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:54,918 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:55,744 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:57,414 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:54:58,753 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:00,214 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:01,748 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:02,740 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:03,741 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:04,743 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:05,744 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:06,745 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:07,746 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:09,096 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 00:55:09,748 INFO [ui.main_window] 100% - Complete
+2026-06-09 00:55:09,750 INFO [ui.main_window] Generation complete
+2026-06-09 00:55:47,734 INFO [ui.main_window] Downloading results to C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\bd73f29d
+2026-06-09 00:55:56,739 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\bd73f29d\refined_mask.png
+2026-06-09 00:55:56,741 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\bd73f29d\object_rgba.png
+2026-06-09 00:55:56,742 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\bd73f29d\object_crop.png
+2026-06-09 00:55:56,744 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\bd73f29d\result.glb
+2026-06-09 01:07:10,318 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/thumb16.jpg
+2026-06-09 01:07:54,271 INFO [ui.main_window] Uploading files
+2026-06-09 01:07:54,884 INFO [ui.main_window] Upload complete: c3b59161
+2026-06-09 01:08:03,014 INFO [ui.main_window] Generation started
+2026-06-09 01:08:04,560 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:08:05,557 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:08:06,566 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:08:07,563 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:08:08,884 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:08:09,574 INFO [ui.main_window] 100% - Complete
+2026-06-09 01:08:09,575 INFO [ui.main_window] Generation complete
+2026-06-09 01:08:14,396 INFO [ui.main_window] Downloading results to C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\c3b59161
+2026-06-09 01:08:22,574 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\c3b59161\refined_mask.png
+2026-06-09 01:08:22,576 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\c3b59161\object_rgba.png
+2026-06-09 01:08:22,577 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\c3b59161\object_crop.png
+2026-06-09 01:08:22,578 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\c3b59161\result.glb
+2026-06-09 01:14:07,431 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/thumb16.jpg
+2026-06-09 01:14:41,082 INFO [ui.main_window] Uploading files
+2026-06-09 01:14:41,689 INFO [ui.main_window] Upload complete: fc603f0b
+2026-06-09 01:14:46,657 INFO [ui.main_window] Generation started
+2026-06-09 01:14:48,199 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:14:49,204 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:14:50,197 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:14:51,196 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:14:52,503 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:14:53,218 INFO [ui.main_window] 100% - Complete
+2026-06-09 01:14:53,219 INFO [ui.main_window] Generation complete
+2026-06-09 01:15:53,459 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/thumb16.jpg
+2026-06-09 01:16:17,138 INFO [ui.main_window] Uploading files
+2026-06-09 01:16:17,745 INFO [ui.main_window] Upload complete: 03852778
+2026-06-09 01:16:23,809 INFO [ui.main_window] Generation started
+2026-06-09 01:16:25,347 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:16:26,357 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:16:27,353 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:16:28,346 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:16:29,567 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:16:30,340 INFO [ui.main_window] 100% - Complete
+2026-06-09 01:16:30,340 INFO [ui.main_window] Generation complete
+2026-06-09 01:16:33,100 INFO [ui.main_window] Downloading results to C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\03852778
+2026-06-09 01:16:41,679 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\03852778\refined_mask.png
+2026-06-09 01:16:41,684 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\03852778\object_rgba.png
+2026-06-09 01:16:41,689 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\03852778\object_crop.png
+2026-06-09 01:16:41,695 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\03852778\result.glb
+2026-06-09 01:17:38,003 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-09 01:18:12,588 INFO [ui.main_window] Uploading files
+2026-06-09 01:18:15,554 INFO [ui.main_window] Upload complete: 57bf1e72
+2026-06-09 01:18:20,496 INFO [ui.main_window] Generation started
+2026-06-09 01:18:22,053 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:18:23,040 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:18:24,046 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:18:25,051 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-09 01:18:26,043 INFO [ui.main_window] 100% - Complete
+2026-06-09 01:18:26,044 INFO [ui.main_window] Generation complete
+2026-06-09 01:18:34,757 INFO [ui.main_window] Downloading results to C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\57bf1e72
+2026-06-09 01:18:40,256 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\57bf1e72\refined_mask.png
+2026-06-09 01:18:40,257 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\57bf1e72\object_rgba.png
+2026-06-09 01:18:40,259 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\57bf1e72\object_crop.png
+2026-06-09 01:18:40,260 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\57bf1e72\result.glb
+2026-06-14 20:58:31,550 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-14 20:58:53,656 ERROR [ui.main_window] Preview failed
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1353, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1113, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\http\client.py", line 1057, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\pratap_gunda\Desktop\hunyuan_test\client\ui\main_window.py", line 330, in preview_mask
+    job_id = self._upload_or_update_points()
+  File "C:\Users\pratap_gunda\Desktop\hunyuan_test\client\ui\main_window.py", line 380, in _upload_or_update_points
+    self.job_id = client.upload(self.input_image_path, points, labels)
+                  ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\Desktop\hunyuan_test\client\api_client.py", line 30, in upload
+    response = requests.post(
+        f"{self.server_url}/upload",
+    ...<7 lines>...
+        timeout=self.timeout,
+    )
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\pratap_gunda\AppData\Local\Programs\Python\Python314\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))
+2026-06-14 20:58:53,702 INFO [ui.main_window] Preview failed: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /upload (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))
+2026-06-14 21:08:06,287 INFO [ui.main_window] Uploaded image and points: b974998d
+2026-06-14 21:08:06,291 INFO [ui.main_window] Running mask preview
+2026-06-14 21:08:11,029 ERROR [ui.main_window] Preview failed: 500 Server Error: Internal Server Error for url: http://127.0.0.1:8000/preview_mask/b974998d
+2026-06-14 21:08:11,031 INFO [ui.main_window] Preview failed: 500 Server Error: Internal Server Error for url: http://127.0.0.1:8000/preview_mask/b974998d
+2026-06-14 21:08:48,022 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-14 21:09:05,864 INFO [ui.main_window] Uploaded image and points: 6177d5ed
+2026-06-14 21:09:05,865 INFO [ui.main_window] Running mask preview
+2026-06-14 21:09:07,426 ERROR [ui.main_window] Preview failed: 500 Server Error: Internal Server Error for url: http://127.0.0.1:8000/preview_mask/6177d5ed
+2026-06-14 21:09:07,427 INFO [ui.main_window] Preview failed: 500 Server Error: Internal Server Error for url: http://127.0.0.1:8000/preview_mask/6177d5ed
+2026-06-14 21:14:57,127 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-14 21:15:16,770 INFO [ui.main_window] Uploaded image and points: fb1057fe
+2026-06-14 21:15:16,771 INFO [ui.main_window] Running mask preview
+2026-06-14 21:15:22,243 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\refined_mask.png
+2026-06-14 21:15:43,063 INFO [ui.main_window] Cleared points
+2026-06-14 21:15:47,357 INFO [ui.main_window] Updated points for job: fb1057fe
+2026-06-14 21:15:47,359 INFO [ui.main_window] Running mask preview
+2026-06-14 21:15:48,177 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\refined_mask.png
+2026-06-14 21:15:59,670 INFO [ui.main_window] Cleared points
+2026-06-14 21:16:04,780 INFO [ui.main_window] Updated points for job: fb1057fe
+2026-06-14 21:16:04,781 INFO [ui.main_window] Running mask preview
+2026-06-14 21:16:05,604 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\refined_mask.png
+2026-06-14 21:16:13,862 INFO [ui.main_window] Cleared points
+2026-06-14 21:16:22,573 INFO [ui.main_window] Updated points for job: fb1057fe
+2026-06-14 21:16:22,576 INFO [ui.main_window] Running mask preview
+2026-06-14 21:16:23,518 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\refined_mask.png
+2026-06-14 21:16:27,620 INFO [ui.main_window] Updated points for job: fb1057fe
+2026-06-14 21:16:28,161 INFO [ui.main_window] Generation started
+2026-06-14 21:16:29,750 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:30,687 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:31,687 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:32,972 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:33,724 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:34,735 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:35,718 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:36,715 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:37,756 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:38,716 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:39,743 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:40,710 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:41,724 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:42,718 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:43,719 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:44,738 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:45,994 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:46,725 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:47,761 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:48,719 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:49,730 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:50,947 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:51,843 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:52,724 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:53,709 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:54,713 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:55,720 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:56,725 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:57,729 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:58,722 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:16:59,803 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:00,729 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:01,726 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:02,719 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:03,709 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:04,868 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:05,730 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:06,716 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:07,795 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:08,726 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:09,726 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:10,723 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:11,728 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:12,741 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:13,811 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:14,851 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:15,797 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:16,750 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:17,835 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:18,865 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:19,821 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:20,879 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:21,832 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:22,830 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:23,746 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:24,933 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:25,860 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:27,589 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:28,891 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:29,822 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:30,918 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:31,853 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:32,889 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:33,840 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:35,282 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:36,860 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:37,749 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:38,817 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:39,817 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:40,863 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:41,797 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:42,866 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:43,826 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:44,850 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:45,800 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:46,853 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:48,393 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:50,325 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:52,450 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:53,964 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:54,969 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:55,990 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:56,946 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:57,951 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:58,961 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:17:59,977 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:01,084 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:02,460 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:03,863 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:04,899 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:05,934 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:06,937 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:07,920 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:08,902 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:09,918 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:10,922 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:12,150 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:13,095 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:13,848 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:15,577 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:17,311 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:18,867 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:19,911 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:21,289 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:23,896 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:24,955 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:25,881 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:26,997 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:28,038 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:29,063 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:30,095 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:31,090 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:32,224 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:33,060 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:34,074 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:34,992 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:35,971 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:36,919 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:37,957 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:38,917 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:39,998 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:40,910 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:41,927 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:42,944 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:43,922 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:44,950 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:45,946 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:46,944 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:47,938 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:48,931 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:49,938 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:50,937 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:51,944 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:52,932 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:53,931 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:54,923 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:55,936 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:57,209 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:58,004 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:18:59,033 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:00,093 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:01,048 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:02,009 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:02,989 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:03,954 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:05,044 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:05,935 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:06,949 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:07,952 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:09,444 INFO [ui.main_window] 80% - Running Hunyuan3D
+2026-06-14 21:19:10,979 INFO [ui.main_window] 100% - Complete
+2026-06-14 21:19:10,985 INFO [ui.main_window] Generation complete
+2026-06-14 21:19:20,983 INFO [ui.main_window] Downloading results to C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe
+2026-06-14 21:19:33,211 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\refined_mask.png
+2026-06-14 21:19:33,212 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\object_rgba.png
+2026-06-14 21:19:33,213 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\object_crop.png
+2026-06-14 21:19:33,214 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\result.glb

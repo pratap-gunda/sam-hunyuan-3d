@@ -1,0 +1,15 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+python-multipart==0.0.20
+requests==2.32.3
+huggingface_hub
+torch
+torchvision
+numpy==2.2.1
+Pillow==11.0.0
+opencv-python-headless
+transformers
+accelerate
+safetensors
+hy3dgen
