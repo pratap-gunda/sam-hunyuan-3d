@@ -42,14 +42,16 @@ def run_pipeline(job_id: str, job_path: Path) -> None:
 
         write_status(job_id, "running", 90, "Running Hunyuan3D")
         hunyuan_template = importlib.import_module("templates.hunyuan_template")
-        hunyuan_template.run_hunyuan3d(
-            front_path=front_path,
-            side_path=side_path,
-            back_path=back_path,
-            output_path=result_path,
-        )
-        if settings.low_vram and hasattr(hunyuan_template, "unload_pipeline"):
-            hunyuan_template.unload_pipeline()
+        try:
+            hunyuan_template.run_hunyuan3d(
+                front_path=front_path,
+                side_path=side_path,
+                back_path=back_path,
+                output_path=result_path,
+            )
+        finally:
+            if settings.low_vram and hasattr(hunyuan_template, "unload_pipeline"):
+                hunyuan_template.unload_pipeline()
         _require_file(result_path, "Hunyuan3D result")
         write_status(job_id, "completed", 100, "Completed")
         logger.info("Job %s completed", job_id)
@@ -104,18 +106,20 @@ def run_flux_stage(job_id: str, job_path: Path) -> None:
     shutil.copyfile(object_crop_path, front_path)
 
     flux_template = importlib.import_module("templates.flux_template")
-    write_status(job_id, "running", 50, "Generating Side View")
-    flux_template.generate_side_view(object_crop_path, side_path)
-    _require_file(side_path, "side view")
+    try:
+        write_status(job_id, "running", 50, "Generating Side View")
+        flux_template.generate_side_view(object_crop_path, side_path)
+        _require_file(side_path, "side view")
 
-    write_status(job_id, "running", 70, "Generating Back View")
-    flux_template.generate_back_view(object_crop_path, back_path)
-    _require_file(back_path, "back view")
+        write_status(job_id, "running", 70, "Generating Back View")
+        flux_template.generate_back_view(object_crop_path, back_path)
+        _require_file(back_path, "back view")
 
-    write_status(job_id, "running", 80, "Generating Multi-View Package")
-    _require_file(front_path, "front view")
-    if settings.low_vram and hasattr(flux_template, "unload_pipe"):
-        flux_template.unload_pipe()
+        write_status(job_id, "running", 80, "Generating Multi-View Package")
+        _require_file(front_path, "front view")
+    finally:
+        if settings.low_vram and hasattr(flux_template, "unload_pipe"):
+            flux_template.unload_pipe()
 
 
 def run_preview(job_id: str, job_path: Path) -> Path:

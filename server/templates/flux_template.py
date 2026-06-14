@@ -28,14 +28,24 @@ def load_pipe() -> FluxKontextPipeline:
             "black-forest-labs/FLUX.1-Kontext-dev",
             torch_dtype=torch.bfloat16,
         )
-        pipe.to("cuda")
+        if settings.flux_sequential_offload:
+            pipe.enable_sequential_cpu_offload()
+        elif settings.flux_cpu_offload:
+            pipe.enable_model_cpu_offload()
+        else:
+            pipe.to("cuda")
+        _enable_memory_helpers(pipe)
     return pipe
 
 
 def unload_pipe() -> None:
     global pipe
     if pipe is not None:
-        pipe.to("cpu")
+        free_hooks = getattr(pipe, "maybe_free_model_hooks", None)
+        if callable(free_hooks):
+            free_hooks()
+        elif not settings.flux_cpu_offload and not settings.flux_sequential_offload:
+            pipe.to("cpu")
         del pipe
         pipe = None
     gc.collect()
@@ -103,27 +113,69 @@ def generate_multiview(
     front_path.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(object_crop_path, front_path)
 
-    source = Image.open(object_crop_path).convert("RGBA")
+    source = _load_flux_source(object_crop_path)
     _generate_view(source, SIDE_PROMPT, side_path)
+    _clear_cuda_cache()
     _generate_view(source, BACK_PROMPT, back_path)
+    _clear_cuda_cache()
 
 
 def generate_side_view(object_crop_path: str | Path, side_path: str | Path) -> None:
-    source = Image.open(object_crop_path).convert("RGBA")
+    source = _load_flux_source(object_crop_path)
     _generate_view(source, SIDE_PROMPT, Path(side_path))
+    _clear_cuda_cache()
 
 
 def generate_back_view(object_crop_path: str | Path, back_path: str | Path) -> None:
-    source = Image.open(object_crop_path).convert("RGBA")
+    source = _load_flux_source(object_crop_path)
     _generate_view(source, BACK_PROMPT, Path(back_path))
+    _clear_cuda_cache()
 
 
 def _generate_view(source: Image.Image, prompt: str, output_path: Path) -> None:
     pipeline = load_pipe()
-    result = pipeline(
-        image=source,
-        prompt=prompt,
-        guidance_scale=2.5,
-    ).images[0]
+    with torch.inference_mode():
+        result = pipeline(
+            image=source,
+            prompt=prompt,
+            guidance_scale=settings.flux_guidance_scale,
+            num_inference_steps=settings.flux_steps,
+            width=source.width,
+            height=source.height,
+        ).images[0]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     result.save(output_path)
+    del result
+
+
+def _load_flux_source(path: str | Path) -> Image.Image:
+    image = Image.open(path).convert("RGBA")
+    return _resize_for_flux(image)
+
+
+def _resize_for_flux(image: Image.Image) -> Image.Image:
+    max_size = max(256, settings.flux_max_size)
+    width, height = image.size
+    longest = max(width, height)
+    if longest <= max_size:
+        return image
+    scale = max_size / longest
+    new_width = max(64, int(width * scale) // 16 * 16)
+    new_height = max(64, int(height * scale) // 16 * 16)
+    return image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+
+
+def _enable_memory_helpers(pipeline: FluxKontextPipeline) -> None:
+    for method_name in (
+        "enable_vae_slicing",
+        "enable_vae_tiling",
+        "enable_attention_slicing",
+    ):
+        method = getattr(pipeline, method_name, None)
+        if callable(method):
+            method()
+
+
+def _clear_cuda_cache() -> None:
+    gc.collect()
+    torch.cuda.empty_cache()

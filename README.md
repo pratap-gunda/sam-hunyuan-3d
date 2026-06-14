@@ -14,7 +14,14 @@ For 12 GB GPUs, run in low-VRAM mode so SAM2, FLUX, and Hunyuan are loaded one s
 
 ```bash
 cd /root/server
-SERVER_LOW_VRAM=1 SERVER_MAX_WORKERS=1 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True uvicorn api:app --host 0.0.0.0 --port 8000
+SERVER_LOW_VRAM=1 SERVER_MAX_WORKERS=1 FLUX_CPU_OFFLOAD=1 FLUX_MAX_SIZE=768 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True uvicorn api:app --host 0.0.0.0 --port 8000
+```
+
+If FLUX still runs out of memory on a 24 GB GPU, lower the generated view size and use sequential CPU offload:
+
+```bash
+cd /root/server
+SERVER_LOW_VRAM=1 SERVER_MAX_WORKERS=1 FLUX_SEQUENTIAL_OFFLOAD=1 FLUX_MAX_SIZE=512 FLUX_STEPS=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True uvicorn api:app --host 0.0.0.0 --port 8000
 ```
 
 For larger GPUs where you want FLUX preloaded during startup:

@@ -14,6 +14,11 @@ class Settings:
     max_workers: int = int(os.getenv("SERVER_MAX_WORKERS", "1"))
     low_vram: bool = os.getenv("SERVER_LOW_VRAM", "1") != "0"
     preload_flux: bool = os.getenv("SERVER_PRELOAD_FLUX", "0") == "1"
+    flux_cpu_offload: bool = os.getenv("FLUX_CPU_OFFLOAD", "1") != "0"
+    flux_sequential_offload: bool = os.getenv("FLUX_SEQUENTIAL_OFFLOAD", "0") == "1"
+    flux_max_size: int = int(os.getenv("FLUX_MAX_SIZE", "768"))
+    flux_steps: int = int(os.getenv("FLUX_STEPS", "20"))
+    flux_guidance_scale: float = float(os.getenv("FLUX_GUIDANCE_SCALE", "2.5"))
 
     @property
     def jobs_dir(self) -> Path:

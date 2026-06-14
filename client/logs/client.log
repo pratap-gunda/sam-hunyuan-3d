@@ -889,3 +889,20 @@ Access to model black-forest-labs/FLUX.1-Kontext-dev is restricted. You must hav
 2026-06-14 23:51:35,291 INFO [ui.main_window] 50% - Generating Side View
 2026-06-14 23:51:36,297 INFO [ui.main_window] 100% - CUDA out of memory. Tried to allocate 18.00 MiB. GPU 0 has a total capacity of 15.48 GiB of which 18.94 MiB is free. Including non-PyTorch memory, this process has 15.45 GiB memory in use. Of the allocated memory 15.14 GiB is allocated by PyTorch, and 18.04 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
 2026-06-14 23:51:36,299 INFO [ui.main_window] Generation failed: CUDA out of memory. Tried to allocate 18.00 MiB. GPU 0 has a total capacity of 15.48 GiB of which 18.94 MiB is free. Including non-PyTorch memory, this process has 15.45 GiB memory in use. Of the allocated memory 15.14 GiB is allocated by PyTorch, and 18.04 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+2026-06-15 00:29:57,015 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-15 00:30:05,368 INFO [ui.main_window] Uploaded image and points: 720215c2
+2026-06-15 00:30:05,369 INFO [ui.main_window] Running mask preview
+2026-06-15 00:30:10,351 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\720215c2\refined_mask.png
+2026-06-15 00:30:13,594 INFO [ui.main_window] View generation started
+2026-06-15 00:30:14,986 INFO [ui.main_window] 30% - Running SAM2
+2026-06-15 00:30:16,069 INFO [ui.main_window] 30% - Running SAM2
+2026-06-15 00:30:17,012 INFO [ui.main_window] 30% - Running SAM2
+2026-06-15 00:30:18,024 INFO [ui.main_window] 30% - Running SAM2
+2026-06-15 00:30:19,027 INFO [ui.main_window] 30% - Running SAM2
+2026-06-15 00:30:20,198 INFO [ui.main_window] 30% - Running SAM2
+2026-06-15 00:30:21,041 INFO [ui.main_window] 50% - Generating Side View
+2026-06-15 00:30:22,058 INFO [ui.main_window] 50% - Generating Side View
+2026-06-15 00:30:23,057 INFO [ui.main_window] 50% - Generating Side View
+2026-06-15 00:30:24,063 INFO [ui.main_window] 50% - Generating Side View
+2026-06-15 00:30:25,065 INFO [ui.main_window] 100% - CUDA out of memory. Tried to allocate 72.00 MiB. GPU 0 has a total capacity of 23.80 GiB of which 76.19 MiB is free. Process 1401930 has 23.72 GiB memory in use. Of the allocated memory 23.39 GiB is allocated by PyTorch, and 15.80 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+2026-06-15 00:30:25,088 INFO [ui.main_window] Generation failed: CUDA out of memory. Tried to allocate 72.00 MiB. GPU 0 has a total capacity of 23.80 GiB of which 76.19 MiB is free. Process 1401930 has 23.72 GiB memory in use. Of the allocated memory 23.39 GiB is allocated by PyTorch, and 15.80 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
