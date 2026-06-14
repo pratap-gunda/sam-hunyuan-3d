@@ -149,8 +149,14 @@ def _generate_view(source: Image.Image, prompt: str, output_path: Path) -> None:
 
 
 def _load_flux_source(path: str | Path) -> Image.Image:
-    image = Image.open(path).convert("RGBA")
+    image = _rgba_to_rgb(Image.open(path).convert("RGBA"))
     return _resize_for_flux(image)
+
+
+def _rgba_to_rgb(image: Image.Image) -> Image.Image:
+    background = Image.new("RGB", image.size, (255, 255, 255))
+    background.paste(image, mask=image.getchannel("A"))
+    return background
 
 
 def _resize_for_flux(image: Image.Image) -> Image.Image:
