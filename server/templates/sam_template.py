@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import gc
 from pathlib import Path
 
 import numpy as np
@@ -15,7 +16,24 @@ CHECKPOINT = settings.cache_dir / "checkpoints" / "sam2.1_hiera_large.pt"
 MODEL_CFG = "configs/sam2.1/sam2.1_hiera_l.yaml"
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-predictor = SAM2ImagePredictor(build_sam2(MODEL_CFG, str(CHECKPOINT), device=device))
+predictor: SAM2ImagePredictor | None = None
+
+
+def load_predictor() -> SAM2ImagePredictor:
+    global predictor
+    if predictor is None:
+        predictor = SAM2ImagePredictor(build_sam2(MODEL_CFG, str(CHECKPOINT), device=device))
+    return predictor
+
+
+def unload_predictor() -> None:
+    global predictor
+    if predictor is not None:
+        del predictor
+        predictor = None
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
 
 
 def run_sam2(
@@ -35,13 +53,14 @@ def run_sam2(
         raise ValueError("SAM2 requires matching non-empty points and labels")
 
     image = np.array(Image.open(input_image_path).convert("RGB"))
-    predictor.set_image(image)
+    predictor_instance = load_predictor()
+    predictor_instance.set_image(image)
 
     point_coords = np.array(points, dtype=np.float32)
     point_labels = np.array(labels, dtype=np.int32)
 
     with torch.inference_mode():
-        masks, _scores, _logits = predictor.predict(
+        masks, _scores, _logits = predictor_instance.predict(
             point_coords=point_coords,
             point_labels=point_labels,
             multimask_output=False,

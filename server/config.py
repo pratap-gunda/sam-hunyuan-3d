@@ -1,14 +1,19 @@
 from __future__ import annotations
 
 import logging
+import os
 from dataclasses import dataclass
 from pathlib import Path
+
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
 
 @dataclass(frozen=True)
 class Settings:
     base_dir: Path = Path(__file__).resolve().parent
-    max_workers: int = 2
+    max_workers: int = int(os.getenv("SERVER_MAX_WORKERS", "1"))
+    low_vram: bool = os.getenv("SERVER_LOW_VRAM", "1") != "0"
+    preload_flux: bool = os.getenv("SERVER_PRELOAD_FLUX", "0") == "1"
 
     @property
     def jobs_dir(self) -> Path:

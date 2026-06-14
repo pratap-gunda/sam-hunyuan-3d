@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import time
+import gc
 from pathlib import Path
 
 import torch
@@ -15,31 +16,58 @@ from config import settings
 os.environ["HF_HOME"] = str(settings.cache_dir)
 os.environ["TORCH_HOME"] = str(settings.cache_dir)
 
-rembg = BackgroundRemover()
-pipeline = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained(
-    "tencent/Hunyuan3D-2mv",
-    subfolder="hunyuan3d-dit-v2-mv-turbo",
-    variant="fp16",
-)
-pipeline.enable_flashvdm()
+rembg: BackgroundRemover | None = None
+pipeline: Hunyuan3DDiTFlowMatchingPipeline | None = None
 
 
-def run_hunyuan3d(image_path: str | Path, output_path: str | Path) -> None:
-    image_path = Path(image_path)
+def load_pipeline() -> Hunyuan3DDiTFlowMatchingPipeline:
+    global pipeline
+    if pipeline is None:
+        pipeline = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained(
+            "tencent/Hunyuan3D-2mv",
+            subfolder="hunyuan3d-dit-v2-mv-turbo",
+            variant="fp16",
+        )
+        pipeline.enable_flashvdm()
+    return pipeline
+
+
+def unload_pipeline() -> None:
+    global pipeline
+    if pipeline is not None:
+        del pipeline
+        pipeline = None
+    gc.collect()
+    torch.cuda.empty_cache()
+
+
+def background_remover() -> BackgroundRemover:
+    global rembg
+    if rembg is None:
+        rembg = BackgroundRemover()
+    return rembg
+
+
+def run_hunyuan3d(
+    front_path: str | Path,
+    side_path: str | Path,
+    back_path: str | Path,
+    output_path: str | Path,
+) -> None:
+    front_path = Path(front_path)
+    side_path = Path(side_path)
+    back_path = Path(back_path)
     output_path = Path(output_path)
 
-    image = Image.open(image_path).convert("RGBA")
-    if image.mode == "RGB":
-        image = rembg(image)
-
     images = {
-        "front": image,
-        "left": image,
-        "back": image,
+        "front": _load_rgba(front_path),
+        "left": _load_rgba(side_path),
+        "back": _load_rgba(back_path),
     }
 
     start_time = time.time()
-    mesh = pipeline(
+    pipeline_instance = load_pipeline()
+    mesh = pipeline_instance(
         image=images,
         num_inference_steps=5,
         octree_resolution=380,
@@ -54,9 +82,18 @@ def run_hunyuan3d(image_path: str | Path, output_path: str | Path) -> None:
     print(f"Saved to: {output_path}")
 
 
+def _load_rgba(path: Path) -> Image.Image:
+    image = Image.open(path).convert("RGBA")
+    if image.mode == "RGB":
+        return background_remover()(image)
+    return image
+
+
 if __name__ == "__main__":
     base_dir = Path.home() / "hunyuan3d"
     run_hunyuan3d(
-        image_path=base_dir / "outputs" / "object_crop.png",
+        front_path=base_dir / "outputs" / "front.png",
+        side_path=base_dir / "outputs" / "side.png",
+        back_path=base_dir / "outputs" / "back.png",
         output_path=base_dir / "outputs" / "result.glb",
     )

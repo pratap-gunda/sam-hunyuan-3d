@@ -11,6 +11,9 @@ DOWNLOAD_FILES = (
     "refined_mask.png",
     "object_rgba.png",
     "object_crop.png",
+    "front.png",
+    "side.png",
+    "back.png",
     "result.glb",
 )
 
@@ -71,6 +74,30 @@ class ApiClient:
         response.raise_for_status()
         return dict(response.json())
 
+    def generate_views(self, job_id: str) -> dict[str, Any]:
+        response = requests.post(f"{self.server_url}/generate_views/{job_id}", timeout=self.timeout)
+        response.raise_for_status()
+        return dict(response.json())
+
+    def preview_views(self, job_id: str, destination_dir: str | Path) -> dict[str, Path]:
+        destination_dir = Path(destination_dir)
+        destination_dir.mkdir(parents=True, exist_ok=True)
+        response = requests.get(f"{self.server_url}/preview_views/{job_id}", timeout=self.timeout)
+        response.raise_for_status()
+        payload = response.json()
+        views = payload["views"]
+        paths: dict[str, Path] = {}
+        for name, url_path in views.items():
+            destination = destination_dir / f"{name}.png"
+            with requests.get(f"{self.server_url}{url_path}", timeout=max(self.timeout, 120), stream=True) as image_response:
+                image_response.raise_for_status()
+                with destination.open("wb") as output:
+                    for chunk in image_response.iter_content(chunk_size=1024 * 1024):
+                        if chunk:
+                            output.write(chunk)
+            paths[str(name)] = destination
+        return paths
+
     def status(self, job_id: str) -> dict[str, Any]:
         response = requests.get(f"{self.server_url}/status/{job_id}", timeout=self.timeout)
         response.raise_for_status()
@@ -121,6 +148,14 @@ def preview_mask(server_url: str, job_id: str, destination: str | Path) -> Path:
 
 def generate(server_url: str, job_id: str) -> dict[str, Any]:
     return ApiClient(server_url).generate(job_id)
+
+
+def generate_views(server_url: str, job_id: str) -> dict[str, Any]:
+    return ApiClient(server_url).generate_views(job_id)
+
+
+def preview_views(server_url: str, job_id: str, destination_dir: str | Path) -> dict[str, Path]:
+    return ApiClient(server_url).preview_views(job_id, destination_dir)
 
 
 def status(server_url: str, job_id: str) -> dict[str, Any]:

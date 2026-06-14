@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
@@ -18,7 +19,22 @@ ensure_directories()
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="SAM2 Hunyuan3D Generation Server", version="1.0.0")
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    from config import settings
+
+    if settings.preload_flux and not settings.low_vram:
+        logger.info("Loading FLUX Kontext pipeline")
+        flux_template = __import__("templates.flux_template", fromlist=["load_pipe"])
+        flux_template.load_pipe()
+        logger.info("FLUX Kontext pipeline ready")
+    else:
+        logger.info("Low-VRAM mode enabled; FLUX Kontext will load only during view generation")
+    yield
+
+
+app = FastAPI(title="SAM2 Hunyuan3D Generation Server", version="1.0.0", lifespan=lifespan)
 
 
 @app.post("/upload", response_model=UploadResponse)
@@ -48,6 +64,29 @@ def preview_mask(job_id: str) -> FileResponse:
     job_path = require_job_dir(job_id)
     path = run_preview(job_id, job_path)
     return FileResponse(path=path, filename="refined_mask.png", media_type="image/png")
+
+
+@app.post("/generate_views/{job_id}", response_model=GenerateResponse)
+def generate_views(job_id: str) -> GenerateResponse:
+    worker_pool.start_views(job_id)
+    return GenerateResponse(job_id=job_id, status="queued", message="View generation started")
+
+
+@app.get("/preview_views/{job_id}")
+def preview_views(job_id: str) -> dict[str, str | dict[str, str]]:
+    job_path = require_job_dir(job_id)
+    filenames = ("front.png", "side.png", "back.png")
+    missing = [filename for filename in filenames if not (job_path / filename).exists()]
+    if missing:
+        raise HTTPException(status_code=404, detail=f"Missing generated views: {', '.join(missing)}")
+    return {
+        "job_id": job_id,
+        "views": {
+            "front": f"/download/{job_id}/front.png",
+            "side": f"/download/{job_id}/side.png",
+            "back": f"/download/{job_id}/back.png",
+        },
+    }
 
 
 @app.post("/generate/{job_id}", response_model=GenerateResponse)

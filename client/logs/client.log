@@ -745,3 +745,147 @@ requests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=8
 2026-06-14 21:19:33,212 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\object_rgba.png
 2026-06-14 21:19:33,213 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\object_crop.png
 2026-06-14 21:19:33,214 INFO [ui.main_window] Downloaded C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\fb1057fe\result.glb
+2026-06-14 22:23:40,240 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-14 22:23:57,432 INFO [ui.main_window] Uploaded image and points: 34a84a5d
+2026-06-14 22:23:57,436 INFO [ui.main_window] Running mask preview
+2026-06-14 22:24:02,433 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\34a84a5d\refined_mask.png
+2026-06-14 22:24:08,118 INFO [ui.main_window] View generation started
+2026-06-14 22:24:09,671 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 22:24:10,686 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 22:24:11,702 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 22:24:12,704 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 22:24:13,726 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 22:24:14,695 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 22:24:15,705 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 22:24:16,711 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 22:24:17,707 INFO [ui.main_window] 100% - CUDA out of memory. Tried to allocate 18.00 MiB. GPU 0 has a total capacity of 11.60 GiB of which 16.94 MiB is free. Process 2021412 has 11.53 GiB memory in use. Of the allocated memory 11.31 GiB is allocated by PyTorch, and 23.12 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+2026-06-14 22:24:17,710 INFO [ui.main_window] Generation failed: CUDA out of memory. Tried to allocate 18.00 MiB. GPU 0 has a total capacity of 11.60 GiB of which 16.94 MiB is free. Process 2021412 has 11.53 GiB memory in use. Of the allocated memory 11.31 GiB is allocated by PyTorch, and 23.12 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+2026-06-14 23:43:22,230 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-14 23:43:31,850 INFO [ui.main_window] Uploaded image and points: 55e550fd
+2026-06-14 23:43:31,851 INFO [ui.main_window] Running mask preview
+2026-06-14 23:43:38,729 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\55e550fd\refined_mask.png
+2026-06-14 23:43:42,880 INFO [ui.main_window] View generation started
+2026-06-14 23:43:44,294 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:43:45,296 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:43:46,294 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:43:47,319 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:43:48,317 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:43:49,322 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:43:50,379 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:43:51,327 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:43:52,320 INFO [ui.main_window] 100% - 401 Client Error. (Request ID: Root=1-6a2eef54-27cf7ab403d6e9a84029802e;42b845ae-3373-4c2b-a8f1-82e62d36e23e)
+
+Cannot access gated repo for url https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/model_index.json.
+Access to model black-forest-labs/FLUX.1-Kontext-dev is restricted. You must have access to it and be authenticated to access it. Please log in.
+2026-06-14 23:43:52,324 INFO [ui.main_window] Generation failed: 401 Client Error. (Request ID: Root=1-6a2eef54-27cf7ab403d6e9a84029802e;42b845ae-3373-4c2b-a8f1-82e62d36e23e)
+
+Cannot access gated repo for url https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/model_index.json.
+Access to model black-forest-labs/FLUX.1-Kontext-dev is restricted. You must have access to it and be authenticated to access it. Please log in.
+2026-06-14 23:47:07,666 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-14 23:47:17,736 INFO [ui.main_window] Uploaded image and points: eea1da30
+2026-06-14 23:47:17,742 INFO [ui.main_window] Running mask preview
+2026-06-14 23:47:23,773 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\eea1da30\refined_mask.png
+2026-06-14 23:47:27,240 INFO [ui.main_window] View generation started
+2026-06-14 23:47:28,669 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:47:29,693 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:47:30,708 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:47:31,795 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:47:32,682 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:47:33,681 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:47:34,696 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:35,711 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:36,704 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:37,755 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:38,752 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:39,763 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:40,761 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:41,730 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:42,699 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:43,697 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:44,723 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:45,738 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:46,793 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:47,785 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:48,803 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:49,733 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:50,728 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:51,730 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:52,736 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:53,733 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:54,732 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:55,729 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:56,815 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:57,734 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:58,731 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:47:59,739 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:00,733 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:01,725 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:02,775 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:03,778 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:04,737 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:05,729 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:06,735 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:07,793 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:08,723 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:09,741 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:10,795 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:11,742 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:12,737 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:13,736 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:14,740 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:15,743 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:16,761 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:17,780 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:18,731 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:19,732 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:20,727 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:21,769 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:22,731 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:23,734 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:24,744 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:25,730 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:26,742 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:27,754 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:28,772 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:29,785 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:30,732 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:31,732 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:32,730 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:33,734 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:34,734 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:35,794 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:36,750 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:37,815 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:38,741 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:39,739 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:40,729 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:41,732 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:42,735 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:43,733 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:44,729 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:45,726 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:46,727 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:47,732 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:48,736 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:49,731 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:50,729 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:51,742 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:48:52,763 INFO [ui.main_window] 100% - CUDA out of memory. Tried to allocate 18.00 MiB. GPU 0 has a total capacity of 15.48 GiB of which 18.94 MiB is free. Including non-PyTorch memory, this process has 15.45 GiB memory in use. Of the allocated memory 15.14 GiB is allocated by PyTorch, and 18.04 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+2026-06-14 23:48:52,766 INFO [ui.main_window] Generation failed: CUDA out of memory. Tried to allocate 18.00 MiB. GPU 0 has a total capacity of 15.48 GiB of which 18.94 MiB is free. Including non-PyTorch memory, this process has 15.45 GiB memory in use. Of the allocated memory 15.14 GiB is allocated by PyTorch, and 18.04 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+2026-06-14 23:50:54,601 INFO [ui.main_window] Loaded image: C:/Users/pratap_gunda/Desktop/car.png
+2026-06-14 23:51:09,375 INFO [ui.main_window] Uploaded image and points: 2e06e4c5
+2026-06-14 23:51:09,378 INFO [ui.main_window] Running mask preview
+2026-06-14 23:51:16,602 INFO [ui.main_window] Preview downloaded: C:\Users\pratap_gunda\Desktop\hunyuan_test\client\downloads\2e06e4c5\refined_mask.png
+2026-06-14 23:51:24,818 INFO [ui.main_window] View generation started
+2026-06-14 23:51:26,270 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:51:27,289 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:51:28,286 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:51:29,283 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:51:30,275 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:51:31,270 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:51:32,294 INFO [ui.main_window] 30% - Running SAM2
+2026-06-14 23:51:33,291 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:51:34,403 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:51:35,291 INFO [ui.main_window] 50% - Generating Side View
+2026-06-14 23:51:36,297 INFO [ui.main_window] 100% - CUDA out of memory. Tried to allocate 18.00 MiB. GPU 0 has a total capacity of 15.48 GiB of which 18.94 MiB is free. Including non-PyTorch memory, this process has 15.45 GiB memory in use. Of the allocated memory 15.14 GiB is allocated by PyTorch, and 18.04 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+2026-06-14 23:51:36,299 INFO [ui.main_window] Generation failed: CUDA out of memory. Tried to allocate 18.00 MiB. GPU 0 has a total capacity of 15.48 GiB of which 18.94 MiB is free. Including non-PyTorch memory, this process has 15.45 GiB memory in use. Of the allocated memory 15.14 GiB is allocated by PyTorch, and 18.04 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

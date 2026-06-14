@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 
 from PySide6.QtCore import QPoint, QRect, QSize, Qt, QThread, QTimer, Signal
-from PySide6.QtGui import QColor, QImage, QPainter, QPen
+from PySide6.QtGui import QColor, QImage, QPainter, QPen, QPixmap
 from PySide6.QtWidgets import (
     QFileDialog,
     QGridLayout,
@@ -184,6 +184,24 @@ class PreviewWorker(QThread):
             self.failed.emit(str(exc))
 
 
+class ViewPreviewWorker(QThread):
+    finished_ok = Signal(dict)
+    failed = Signal(str)
+
+    def __init__(self, client: ApiClient, job_id: str, destination_dir: Path) -> None:
+        super().__init__()
+        self.client = client
+        self.job_id = job_id
+        self.destination_dir = destination_dir
+
+    def run(self) -> None:
+        try:
+            paths = self.client.preview_views(self.job_id, self.destination_dir)
+            self.finished_ok.emit({name: str(path) for name, path in paths.items()})
+        except Exception as exc:
+            self.failed.emit(str(exc))
+
+
 class DownloadWorker(QThread):
     finished_ok = Signal(list)
     failed = Signal(str)
@@ -213,7 +231,10 @@ class MainWindow(QMainWindow):
 
         self.job_id: str | None = None
         self.input_image_path: str | None = None
+        self.active_operation: str | None = None
+        self.points_dirty = False
         self.preview_worker: PreviewWorker | None = None
+        self.view_preview_worker: ViewPreviewWorker | None = None
         self.download_worker: DownloadWorker | None = None
 
         self.server_url = QLineEdit("http://127.0.0.1:8000")
@@ -221,15 +242,20 @@ class MainWindow(QMainWindow):
         self.input_image.setReadOnly(True)
 
         self.preview_button = QPushButton("Generate Mask Preview")
+        self.generate_views_button = QPushButton("Generate Views")
         self.generate_button = QPushButton("Generate Mesh")
         self.clear_points_button = QPushButton("Clear Points")
         self.remove_last_button = QPushButton("Remove Last Point")
         self.download_button = QPushButton("Download")
         self.preview_button.setEnabled(False)
+        self.generate_views_button.setEnabled(False)
         self.generate_button.setEnabled(False)
         self.download_button.setEnabled(False)
 
         self.canvas = PointPromptCanvas()
+        self.front_view = self._view_label("Front View")
+        self.side_view = self._view_label("Side View")
+        self.back_view = self._view_label("Back View")
 
         self.progress = QProgressBar()
         self.progress.setRange(0, 100)
@@ -262,6 +288,7 @@ class MainWindow(QMainWindow):
 
         buttons = QHBoxLayout()
         buttons.addWidget(self.preview_button)
+        buttons.addWidget(self.generate_views_button)
         buttons.addWidget(self.generate_button)
         buttons.addWidget(self.clear_points_button)
         buttons.addWidget(self.remove_last_button)
@@ -272,6 +299,11 @@ class MainWindow(QMainWindow):
         root.addWidget(self.canvas, 1)
         root.addWidget(self.points_label)
         root.addLayout(buttons)
+        views = QHBoxLayout()
+        views.addWidget(self.front_view)
+        views.addWidget(self.side_view)
+        views.addWidget(self.back_view)
+        root.addLayout(views)
         root.addWidget(self.progress)
         root.addWidget(self.status_label)
         root.addWidget(self.job_label)
@@ -281,11 +313,20 @@ class MainWindow(QMainWindow):
 
     def _connect(self) -> None:
         self.preview_button.clicked.connect(self.preview_mask)
+        self.generate_views_button.clicked.connect(self.generate_views)
         self.generate_button.clicked.connect(self.generate_mesh)
         self.clear_points_button.clicked.connect(self.clear_points)
         self.remove_last_button.clicked.connect(self.remove_last_point)
         self.download_button.clicked.connect(self.download)
         self.canvas.prompts_changed.connect(self._sync_prompt_buttons)
+        self.canvas.prompts_changed.connect(self._mark_points_dirty)
+
+    def _view_label(self, text: str) -> QLabel:
+        label = QLabel(text)
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        label.setMinimumSize(180, 140)
+        label.setStyleSheet("QLabel { border: 1px solid #555; background: #202226; color: #cfd3dc; }")
+        return label
 
     def client(self) -> ApiClient:
         return ApiClient(self.server_url.text().strip())
@@ -304,10 +345,13 @@ class MainWindow(QMainWindow):
             self.input_image.setText(path)
             self.canvas.load_image(path)
             self.job_id = None
+            self.points_dirty = False
+            self.active_operation = None
             self.progress.setValue(0)
             self.job_label.setText("No job")
             self.status_label.setText("Add foreground and background points")
             self.download_button.setEnabled(False)
+            self._clear_view_previews()
             self._sync_prompt_buttons()
             self.append_log(f"Loaded image: {path}")
         except Exception as exc:
@@ -315,11 +359,13 @@ class MainWindow(QMainWindow):
 
     def clear_points(self) -> None:
         self.canvas.clear_points()
+        self._clear_view_previews()
         self._sync_prompt_buttons()
         self.append_log("Cleared points")
 
     def remove_last_point(self) -> None:
         self.canvas.remove_last_point()
+        self._clear_view_previews()
         self._sync_prompt_buttons()
         self.append_log("Removed last point")
 
@@ -339,6 +385,24 @@ class MainWindow(QMainWindow):
         except Exception as exc:
             logger.exception("Preview failed")
             self.show_error(f"Preview failed: {exc}")
+
+    def generate_views(self) -> None:
+        if not self._ensure_ready_for_prompts():
+            return
+        try:
+            job_id = self._upload_or_update_points()
+            response = self.client().generate_views(job_id)
+            self.active_operation = "views"
+            self.append_log(response.get("message", "View generation started"))
+            self.status_label.setText("View generation started")
+            self.preview_button.setEnabled(False)
+            self.generate_views_button.setEnabled(False)
+            self.generate_button.setEnabled(False)
+            self.download_button.setEnabled(False)
+            self.timer.start()
+        except Exception as exc:
+            logger.exception("Generate views failed")
+            self.show_error(f"Generate views failed: {exc}")
 
     def preview_finished(self, path: str) -> None:
         try:
@@ -361,6 +425,7 @@ class MainWindow(QMainWindow):
         try:
             job_id = self._upload_or_update_points()
             response = self.client().generate(job_id)
+            self.active_operation = "mesh"
             self.append_log(response.get("message", "Mesh generation started"))
             self.status_label.setText("Mesh generation started")
             self.generate_button.setEnabled(False)
@@ -379,9 +444,12 @@ class MainWindow(QMainWindow):
         if self.job_id is None:
             self.job_id = client.upload(self.input_image_path, points, labels)
             self.job_label.setText(f"Job ID: {self.job_id}")
+            self.points_dirty = False
             self.append_log(f"Uploaded image and points: {self.job_id}")
-        else:
+        elif self.points_dirty:
             client.update_points(self.job_id, points, labels)
+            self.points_dirty = False
+            self._clear_view_previews()
             self.append_log(f"Updated points for job: {self.job_id}")
         return self.job_id
 
@@ -410,20 +478,50 @@ class MainWindow(QMainWindow):
             self.status_label.setText(f"{status}: {message}")
             self.append_log(f"{progress}% - {message}")
 
-            if status == "completed":
+            if self.active_operation == "views" and status == "queued" and progress >= 80:
                 self.timer.stop()
+                self.load_view_previews()
+            elif status == "completed":
+                self.timer.stop()
+                self.active_operation = None
                 self.download_button.setEnabled(True)
                 self._sync_prompt_buttons()
                 self.append_log("Generation complete")
             elif status == "failed":
                 self.timer.stop()
+                self.active_operation = None
                 self._sync_prompt_buttons()
                 self.show_error(f"Generation failed: {message}")
         except Exception as exc:
             logger.exception("Status polling failed")
             self.timer.stop()
+            self.active_operation = None
             self._sync_prompt_buttons()
             self.show_error(f"Status polling failed: {exc}")
+
+    def load_view_previews(self) -> None:
+        if not self.job_id:
+            return
+        destination = Path(__file__).resolve().parents[1] / "downloads" / self.job_id
+        self.status_label.setText("Loading view previews")
+        self.view_preview_worker = ViewPreviewWorker(self.client(), self.job_id, destination)
+        self.view_preview_worker.finished_ok.connect(self.view_previews_finished)
+        self.view_preview_worker.failed.connect(self.view_previews_failed)
+        self.view_preview_worker.start()
+
+    def view_previews_finished(self, paths: dict) -> None:
+        self._set_view_pixmap(self.front_view, paths.get("front"))
+        self._set_view_pixmap(self.side_view, paths.get("side"))
+        self._set_view_pixmap(self.back_view, paths.get("back"))
+        self.active_operation = None
+        self.status_label.setText("View previews ready")
+        self.append_log("Front, side, and back views are ready")
+        self._sync_prompt_buttons()
+
+    def view_previews_failed(self, message: str) -> None:
+        self.active_operation = None
+        self.show_error(f"View preview failed: {message}")
+        self._sync_prompt_buttons()
 
     def download(self) -> None:
         if not self.job_id:
@@ -449,10 +547,37 @@ class MainWindow(QMainWindow):
         self.show_error(f"Download failed: {message}")
 
     def _sync_prompt_buttons(self) -> None:
-        enabled = self.input_image_path is not None and self.canvas.has_points()
+        enabled = self.active_operation is None and self.input_image_path is not None and self.canvas.has_points()
         self.preview_button.setEnabled(enabled)
+        self.generate_views_button.setEnabled(enabled)
         self.generate_button.setEnabled(enabled)
         self.points_label.setText(f"Points: {len(self.canvas.points)}")
+
+    def _mark_points_dirty(self) -> None:
+        self.points_dirty = self.job_id is not None
+
+    def _clear_view_previews(self) -> None:
+        self.front_view.setPixmap(QPixmap())
+        self.side_view.setPixmap(QPixmap())
+        self.back_view.setPixmap(QPixmap())
+        self.front_view.setText("Front View")
+        self.side_view.setText("Side View")
+        self.back_view.setText("Back View")
+
+    def _set_view_pixmap(self, label: QLabel, path: str | None) -> None:
+        if not path:
+            return
+        pixmap = QPixmap(path)
+        if pixmap.isNull():
+            label.setText("Preview unavailable")
+            return
+        label.setPixmap(
+            pixmap.scaled(
+                label.size(),
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
+        )
 
     def append_log(self, message: str) -> None:
         self.log_output.appendPlainText(message)

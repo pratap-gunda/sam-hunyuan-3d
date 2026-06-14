@@ -17,6 +17,9 @@ ALLOWED_DOWNLOADS = {
     "refined_mask.png",
     "object_rgba.png",
     "object_crop.png",
+    "front.png",
+    "side.png",
+    "back.png",
     "result.glb",
 }
 
