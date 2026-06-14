@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QProgressBar,
     QPushButton,
     QSizePolicy,
+    QStackedWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -256,6 +257,10 @@ class MainWindow(QMainWindow):
         self.front_view = self._view_label("Front View")
         self.side_view = self._view_label("Side View")
         self.back_view = self._view_label("Back View")
+        self.view_panel = self._build_view_panel()
+        self.viewer_stack = QStackedWidget()
+        self.viewer_stack.addWidget(self.canvas)
+        self.viewer_stack.addWidget(self.view_panel)
 
         self.progress = QProgressBar()
         self.progress.setRange(0, 100)
@@ -296,14 +301,9 @@ class MainWindow(QMainWindow):
         buttons.addStretch(1)
 
         root.addLayout(grid)
-        root.addWidget(self.canvas, 1)
+        root.addWidget(self.viewer_stack, 1)
         root.addWidget(self.points_label)
         root.addLayout(buttons)
-        views = QHBoxLayout()
-        views.addWidget(self.front_view)
-        views.addWidget(self.side_view)
-        views.addWidget(self.back_view)
-        root.addLayout(views)
         root.addWidget(self.progress)
         root.addWidget(self.status_label)
         root.addWidget(self.job_label)
@@ -324,9 +324,19 @@ class MainWindow(QMainWindow):
     def _view_label(self, text: str) -> QLabel:
         label = QLabel(text)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        label.setMinimumSize(180, 140)
+        label.setMinimumSize(220, 220)
+        label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         label.setStyleSheet("QLabel { border: 1px solid #555; background: #202226; color: #cfd3dc; }")
         return label
+
+    def _build_view_panel(self) -> QWidget:
+        panel = QWidget()
+        layout = QHBoxLayout(panel)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(self.front_view)
+        layout.addWidget(self.side_view)
+        layout.addWidget(self.back_view)
+        return panel
 
     def client(self) -> ApiClient:
         return ApiClient(self.server_url.text().strip())
@@ -352,6 +362,7 @@ class MainWindow(QMainWindow):
             self.status_label.setText("Add foreground and background points")
             self.download_button.setEnabled(False)
             self._clear_view_previews()
+            self._show_canvas()
             self._sync_prompt_buttons()
             self.append_log(f"Loaded image: {path}")
         except Exception as exc:
@@ -360,12 +371,14 @@ class MainWindow(QMainWindow):
     def clear_points(self) -> None:
         self.canvas.clear_points()
         self._clear_view_previews()
+        self._show_canvas()
         self._sync_prompt_buttons()
         self.append_log("Cleared points")
 
     def remove_last_point(self) -> None:
         self.canvas.remove_last_point()
         self._clear_view_previews()
+        self._show_canvas()
         self._sync_prompt_buttons()
         self.append_log("Removed last point")
 
@@ -407,6 +420,7 @@ class MainWindow(QMainWindow):
     def preview_finished(self, path: str) -> None:
         try:
             self.canvas.load_preview_mask(path)
+            self._show_canvas()
             self.status_label.setText("Mask preview ready")
             self.append_log(f"Preview downloaded: {path}")
         except Exception as exc:
@@ -513,6 +527,7 @@ class MainWindow(QMainWindow):
         self._set_view_pixmap(self.front_view, paths.get("front"))
         self._set_view_pixmap(self.side_view, paths.get("side"))
         self._set_view_pixmap(self.back_view, paths.get("back"))
+        self._show_views()
         self.active_operation = None
         self.status_label.setText("View previews ready")
         self.append_log("Front, side, and back views are ready")
@@ -555,6 +570,7 @@ class MainWindow(QMainWindow):
 
     def _mark_points_dirty(self) -> None:
         self.points_dirty = self.job_id is not None
+        self._show_canvas()
 
     def _clear_view_previews(self) -> None:
         self.front_view.setPixmap(QPixmap())
@@ -563,6 +579,12 @@ class MainWindow(QMainWindow):
         self.front_view.setText("Front View")
         self.side_view.setText("Side View")
         self.back_view.setText("Back View")
+
+    def _show_canvas(self) -> None:
+        self.viewer_stack.setCurrentWidget(self.canvas)
+
+    def _show_views(self) -> None:
+        self.viewer_stack.setCurrentWidget(self.view_panel)
 
     def _set_view_pixmap(self, label: QLabel, path: str | None) -> None:
         if not path:
